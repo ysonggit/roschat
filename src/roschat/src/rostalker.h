@@ -18,7 +18,7 @@ struct ListenerAgent{
     int id;
     ros::NodeHandle nh;
     ros::Subscriber res_sub;
-    void getResponse();
+    void getResponse(const std_msgs::String & res);
 };
 
 class RosTalker{
@@ -32,8 +32,10 @@ public:
         }
     }
     int listener_num;
+    unordered_map<int, ListenerAgent*> agents;
     ros::NodeHandle nh;
     ros::Publisher msg_pub;
+    void talk();
     int add(int, int);
 };
 #endif
