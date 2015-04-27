@@ -2,7 +2,6 @@
 #define ROS_TALKER_H
 
 #include <ros/ros.h>
-#include <ros/rosconsole.h>
 #include "std_msgs/String.h"
 #include <sstream>
 #include <string>
