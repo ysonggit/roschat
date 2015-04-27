@@ -12,7 +12,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 #add_executable(rostalker src/rostalker.cpp)
-add_executable(roslistener src/roslistener.cpp)
+add_executable(roslistener ${PROJECT_SOURCE_DIR}/src/roslistener.cpp)
 target_link_libraries(roslistener
   ${catkin_LIBRARIES} pthread
 )
