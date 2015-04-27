@@ -1,9 +1,14 @@
 #include "rostalker.h"
+using namespace std;
+
+void ListenerAgent::getResponse(const std_msgs::String & res){
+    ROS_INFO_STREAM("Get listener "<<id<<" response : "<<res);
+}
 
 void RosTalker::talk(){
     std_msgs::String msg;
     std::stringstream ss;
-    ss<<"hello world";
+    ss<<"hello listeners, I am the presenter";
     msg.data = ss.str();
     msg_pub.publish(msg);
 }
