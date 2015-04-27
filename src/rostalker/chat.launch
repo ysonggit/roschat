@@ -3,10 +3,10 @@
 <param type="int" name="listener_num" value="2"/>
 <node type="rostalker" pkg="rostalker" name="presenter" output="screen">
 </node>
-<node type="roslistener" pkg="roschat" name="listener1">
+<node type="roslistener" pkg="roslistener" name="listener1">
 <param type="int" name="listenerid" value="1"/>
 </node>
-<node type="roslistener" pkg="roschat" name="listener2">
+<node type="roslistener" pkg="roslistener" name="listener2">
 <param type="int" name="listenerid" value="2"/>
 </node>
 </launch>
