@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <launch>
 <param type="int" name="listener_num" value="2"/>
-<node type="rostalker" pkg="roschat" name="presenter">
+<node type="rostalker" pkg="rostalker" name="presenter">
 </node>
 <node type="roslistener" pkg="roschat" name="listener1">
 <param type="int" name="listenerid" value="1"/>
