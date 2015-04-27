@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-set(PROJECT_NAME roschat)
+set(PROJECT_NAME roslistener)
 project(${PROJECT_NAME})
 set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
 find_package(catkin REQUIRED COMPONENTS
