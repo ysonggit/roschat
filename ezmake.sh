@@ -15,7 +15,7 @@ then
     for DIR in $PKGS
     do
         EXE=`find ${SRCDIR}/${DIR} -type f -executable | awk '{print $1}'`
-        if [ -e "${EXE}"]
+        if [ -f "${EXE}"]
         then
             TARGETDIR="${MYDIR}/${DIR}/"
             echo "cp ${EXE} ${TARGETDIR}"
