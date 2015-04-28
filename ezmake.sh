@@ -15,9 +15,22 @@ then
     for DIR in $PKGS
     do
         EXE=`find ${SRCDIR}/${DIR} -type f -executable | awk '{print $1}'`
-        TARGETDIR="${MYDIR}/${DIR}/"
-        echo "cp ${EXE} ${TARGETDIR}"
-        cp ${EXE} ${TARGETDIR} 
+        if [-e "{EXE}"]
+        then
+            TARGETDIR="${MYDIR}/${DIR}/"
+            echo "cp ${EXE} ${TARGETDIR}"
+            cp ${EXE} ${TARGETDIR}
+        else
+            echo "Error: no executables found in build directory"
+        fi
     done
-
+else
+    echo "Error: could not find directory build. Have you run catkin_make?"
 fi
+
+echo "Show package directories: \n"
+for DIR in $PKGS
+do
+    ls ${MYDIR}/${DIR}
+done
+
