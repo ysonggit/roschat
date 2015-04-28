@@ -15,7 +15,7 @@ then
     for DIR in $PKGS
     do
         EXE=`find ${SRCDIR}/${DIR} -type f -executable | awk '{print $1}'`
-        if [-e "{EXE}"]
+        if [ -e "{EXE}"]
         then
             TARGETDIR="${MYDIR}/${DIR}/"
             echo "cp ${EXE} ${TARGETDIR}"
@@ -31,6 +31,8 @@ fi
 echo "Show package directories: \n"
 for DIR in $PKGS
 do
+    echo "-----------------------\n"
+    echo "${MYDIR}/${DIR}:\n"
     ls ${MYDIR}/${DIR}
 done
 
