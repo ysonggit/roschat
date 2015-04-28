@@ -73,4 +73,8 @@ echo " Id |       Name          "
 echo "--------------------------"
 getArray ${INFILE}
 getServers
-printServers 
+printServers
+
+echo "Enter the server id, followed by [ENTER]: "
+read srvid
+
