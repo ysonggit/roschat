@@ -28,11 +28,13 @@ else
     echo "Error: could not find directory build. Have you run catkin_make?"
 fi
 
+echo "--------------------------\n"
 echo "Show package directories: \n"
+echo "--------------------------\n"
 for DIR in $PKGS
 do
-    echo "-----------------------\n"
-    echo "${MYDIR}/${DIR}:\n"
+    echo "____________________________\n"
+    echo "Directory:  ${MYDIR}/${DIR}:\n"
     ls ${MYDIR}/${DIR}
 done
 
