@@ -76,4 +76,6 @@ printServers
 
 echo "Enter the server id, followed by [ENTER]: "
 read srvid
-echo ${servers[$srvid]}
+srvname=${servers[$srvid]}
+echo $srvname
+ssh $srvname
