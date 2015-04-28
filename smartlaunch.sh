@@ -15,7 +15,8 @@ echo "|----------------m-m---------|"
 # 2. read ssh configure file to figure out available server names
 INFILE="/acct/s1/song24/.ssh/config"
 array=()
-servers=()
+#servers=()
+declare -A servers
 # Read the file in parameter and fill the array named "array"
 getArray() {
     i=0
@@ -48,7 +49,7 @@ getServers(){
             do
                 if [ "$word" != "Host" ]
                 then
-                     servers[serveridx]=$word
+                     servers[$serveridx]=$word
                 fi
             done
             serveridx=$(($serveridx+1))
@@ -58,11 +59,9 @@ getServers(){
 }
 
 printServers() {
-    id=1
-    for e in  "${servers[@]}"
+    for k in  "${!servers[@]}"
     do
-        echo " ${id}    $e"
-        id=$(($id+1))
+        echo " $k ${servers[$k]}"
     done
 }
 
@@ -77,4 +76,4 @@ printServers
 
 echo "Enter the server id, followed by [ENTER]: "
 read srvid
-
+echo ${servers[$srvid]}
