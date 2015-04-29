@@ -13,6 +13,11 @@ echo "|----------------m-m---------|"
 # source devel/setup.bash
 
 # 2. read ssh configure file to figure out available server names
+# The format of ssh config is
+# Host XXX
+#      HostName XXX.cse.sc.edu
+#      Port YYY
+#      User ZZZ
 INFILE="/acct/s1/song24/.ssh/config"
 array=()
 #servers=()
