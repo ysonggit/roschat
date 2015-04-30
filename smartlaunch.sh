@@ -104,7 +104,7 @@ function connectServer(){
 
     writeLaunch $2
 
-    mv ${CLIENTLAUNCH} ./src/${CLIENTROSPACK}/
+    cp ${CLIENTLAUNCH} ./src/${CLIENTROSPACK}/${CLIENTLAUNCH}
 
     roslaunch ${CLIENTROSPACK} ${CLIENTLAUNCH}
     '
@@ -159,8 +159,8 @@ function distributeTasks(){
         done
         srvid=$((${servers_count}+1))
         server_nodes[$srvid]=""
-        tasks_num=$(($rest_nodes>$num?$num:$rest_nodes))
-        nodes_count=$(($nodes_count+$task_num))
+        tasks_num=$((${rest_nodes}>${num}?${num}:${rest_nodes}))
+        nodes_count=$((${nodes_count}+${task_num}))
         count=0
         for k in "${nodes[@]}"
         do
@@ -207,7 +207,7 @@ echo "start node on localhost : http://${MASTER}:11311"
 source devel/setup.bash
 roslaunch ${MASTERROSPACK} ${MASTERLAUNCH}
 
-for sid in "$[!server_nodes[@]]"
+for sid in "${!server_nodes[@]}"
 do
     echo "start node on server : ${servers[$sid]}" 
     connectServer  "${servers[$sid]}" "${server_nodes[$sid]}"

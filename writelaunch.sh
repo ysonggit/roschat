@@ -19,6 +19,7 @@ function readTemplate() {
     done < $1
 }
 
+CLIENTLAUNCH="client.launch"
 # NOTE: must have server_nodes array built before call this function
 # Usage:
 # writeLaunch NODESIDS
