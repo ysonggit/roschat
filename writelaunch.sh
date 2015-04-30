@@ -12,7 +12,7 @@ TEMPLATE="template.launch"
 XMLFILE="run.launch"
 #nodetemplate=$(<${TEMPLATE})
 template_array=()
-getArray() {
+function getArray() {
     i=0
     while read line # Read a line
     do

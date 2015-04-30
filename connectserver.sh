@@ -18,8 +18,10 @@ echo " Connect to Server ${host} ... "
 ssh $host '
 cd catkin_ws
 
+./writelaunch.sh
+
 source devel/setup.bash
 
-roslaunch roslistener listeners.launch
+roslaunch roslistener run.launch
 '
 
