@@ -208,5 +208,5 @@ roslaunch ${MASTERROSPACK} ${MASTERLAUNCH}
 for sid in "$[!server_nodes[@]]"
 do
     echo "start node on server : ${servers[$sid]}" 
-    connectServer "${MASTER}" "${servers[$sid]}" "${server_nodes[$sid]}"
+    connectServer  "${servers[$sid]}" "${server_nodes[$sid]}"
 done
