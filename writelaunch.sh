@@ -7,12 +7,10 @@
 # 2. set works on a copy of input file
 #sed  -i -- "s/\${number}/$num/" ${SRCFILE}  
 
-# template.launch contains only the XML format definition of a ros node
-TEMPLATE="template.launch"
-XMLFILE="run.launch"
 #nodetemplate=$(<${TEMPLATE})
 template_array=()
-function getArray() {
+
+function readTemplate() {
     i=0
     while read line # Read a line
     do
@@ -21,25 +19,31 @@ function getArray() {
     done < $1
 }
 
-getArray ${TEMPLATE}
-
-nums=(28 29 30)
-# get array length
-arr_len=${#nums[@]}
-# write to launch file
-echo "<launch>" >> ${XMLFILE}
-for (( i=0; i<${arr_len}; i++ ));
-do
-    for e in "${template_array[@]}"
+# NOTE: must have server_nodes array built before call this function
+# Usage:
+# writeLaunch NODESIDS
+function writeLaunch(){
+    # take array as argument
+    declare -a argarray=("${!1}")
+    nums=(`echo $argarray`)
+    # get array length
+    arr_len=${#nums[@]}
+    # read template xml file
+    readTemplate ${TEMPLATE}
+    # write to launch file based on template
+    echo "<launch>" >> ${CLIENTLAUNCH}
+    for (( i=0; i<${arr_len}; i++ ));
     do
-        elem=$e
-        elem=${elem/"#"/${nums[$i]}}
-        echo $elem >> ${XMLFILE}
+        for e in "${template_array[@]}"
+        do
+            elem=$e
+            elem=${elem/"@"/${nums[$i]}}
+            echo $elem >> ${CLIENTLAUNCH}
+        done
     done
-done
-echo "</launch>" >> ${XMLFILE};
+    echo "</launch>" >> ${CLIENTLAUNCH};
 
-#echo $nodetemplate >> ${XMLFILE}
-
+    #echo $nodetemplate >> ${XMLFILE}
+}
 
 

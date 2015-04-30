@@ -9,21 +9,28 @@ echo "|               (. .)        |"
 echo "|              (( v ))       |"
 echo "|----------------m-m---------|"
 
-# 1. source environment loader
-# source devel/setup.bash
 
-# 2. read ssh configure file to figure out available server names
+# read ssh configure file to figure out available server names
 # The format of ssh config is
 # Host XXX
 #      HostName XXX.cse.sc.edu
 #      Port YYY
 #      User ZZZ
 INFILE="/acct/s1/song24/.ssh/config"
+MASTER="eos"
+MASTERLAUNCH="chat.launch"
+MASTERROSPACK="rostalker"
+# template.launch contains only the XML format definition of a ros node
+TEMPLATE="template.launch"
+CLIENTLAUNCH="client.launch"
+CLIENTROSPACK="roslistener"
+
 array=()
-#servers=()
 declare -A servers
+# Usage
+# getArray SOURCEFILE 
 # Read the file in parameter and fill the array named "array"
-getArray() {
+function getArray() {
     i=0
     while read line # Read a line
     do
@@ -32,14 +39,15 @@ getArray() {
     done < $1
 }
 
-printArray() {
+function printArray() {
     for e in  "${array[@]}"
     do
         echo "$e"
     done
 }
 
-getServers(){
+function getServers(){
+    getArray ${INFILE}
     idx=0;
     rem=0;
     serveridx=1;
@@ -63,24 +71,142 @@ getServers(){
     done 
 }
 
-printServers() {
+function printServers() {
+    echo "--------------------------"
+    echo " Available ROS Servers    "
+    echo "--------------------------"
+    echo " Id |       Name          "
+    echo "--------------------------"
     for k in  "${!servers[@]}"
     do
         echo " $k ${servers[$k]}"
     done
 }
 
-echo "--------------------------"
-echo " Available ROS Servers    "
-echo "--------------------------"
-echo " Id |       Name          "
-echo "--------------------------"
-getArray ${INFILE}
+# Useage:
+# connect_server CLIENTNAME NODESIDS
+# NOTE: make sure to compile the ros program before run it 
+# 1. connect to server using ssh
+# 2. write launch file to run on that server based on template file
+# 3. set ROS_MASTER to MASTER
+# 4. call roslaunch 
+function connectServer(){
+    host=$1
+    echo " Connect to Server ${host} ... "
+    ssh $host '
+    cd catkin_ws
+
+    export ROS_MASTER_URI=http://${MASTER}:11311
+
+    source devel/setup.bash
+
+    source writelaunch.sh
+
+    writeLaunch $2
+
+    roslaunch ${ROSPACK} ${CLIENTLAUNCH}
+    '
+}
+
+
+declare -A used_servers
+declare -A nodes
+declare -A used_nodes
+declare -A server_nodes
+
+function distributeTasks(){
+    # number of servers
+    n=${#servers[@]}
+    echo "Enter total number of nodes run on the server, followed by [ENTER]:"
+    read total
+
+    for((i=1; i<=${total}; i++));
+    do
+        nodes[$i]=$i
+        used_nodes[$i]=0
+    done
+
+    verbose=false
+    #### show initial arrays
+    if [ $verbose == true ];
+    then
+        for j in "${nodes[@]}"
+        do
+            echo "$j"
+            echo "used_nodes[$j] = ${used_nodes[$j]}" 
+        done
+    fi
+    ####
+    echo "Enter maximum number of nodes you want to run on each server, followed by [ENTER]:"
+    read num
+
+    nodes_count=0
+    servers_count=0
+    while [ $nodes_count -lt $total ]
+    do
+        rest_nodes=$((${total}-${nodes_count}))
+        rest_servers=$((${n}-${servers_count}))
+        echo "There are $rest_nodes nodes to be assigned to $rest_servers servers"
+        echo "Available servers: "
+        for((i=1; i<=n; i++));
+        do
+            if [ -z "${used_servers[$i]}" ]; # server not used yet -z : is zero 
+            then
+                echo "$i : ${servers[$i]}"
+            fi
+        done
+        srvid=$((${servers_count}+1))
+        server_nodes[$srvid]=""
+        tasks_num=$(($rest_nodes>$num?$num:$rest_nodes))
+        nodes_count=$(($nodes_count+$task_num))
+        count=0
+        for k in "${nodes[@]}"
+        do
+            if [ ${used_nodes[$k]} == "0" ];
+            then
+                used_nodes[$k]=1
+                count=$(($count+1))
+                server_nodes[$srvid]="${server_nodes[$srvid]}  $k"
+                if [ $count == $num || $nodes_count == $total ];
+                then
+                    break;
+                fi
+            fi
+        done
+
+        for snkey in "${!server_nodes[@]}"
+        do
+            printf "Server $snkey runs nodes : "
+            for snval in "${server_nodes[$snkey]}"
+            do
+                printf "$snval  "
+            done
+            printf "\n"
+        done
+
+        #### debug info
+        if [ $verbose == true ];
+        then
+            for((i=1; i<=total; i++));
+            do
+                echo "used_nodes[$i] = ${used_nodes[$i]}"
+            done
+        fi
+        #####
+    done
+}
+
 getServers
 printServers
+distributeTasks
+#### start master on localhost
+echo "start node on localhost : http://${MASTER}:11311"
+# set environment loader
+source devel/setup.bash
+roslaunch ${MASTERROSPACK} ${MASTERLAUNCH}
 
-echo "Enter the server id, followed by [ENTER]: "
-read srvid
-srvname=${servers[$srvid]}
-echo $srvname
-ssh $srvname
+for sid in "$[!server_nodes[@]]"
+do
+    echo "start node on server : ${servers[$sid]}" 
+    connectServer "${MASTER}" "${servers[$sid]}" "${server_nodes[$sid]}"
+done
