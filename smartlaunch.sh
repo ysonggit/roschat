@@ -104,7 +104,9 @@ function connectServer(){
 
     writeLaunch $2
 
-    roslaunch ${ROSPACK} ${CLIENTLAUNCH}
+    mv ${CLIENTLAUNCH} ./src/${CLIENTROSPACK}/
+
+    roslaunch ${CLIENTROSPACK} ${CLIENTLAUNCH}
     '
 }
 
