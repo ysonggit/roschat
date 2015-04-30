@@ -94,6 +94,10 @@ function connectServer(){
     host=$1
     echo " Connect to Server ${host} ... "
     ssh $host '
+    ./removezombies.sh
+
+    kill -9 $(pgrep $1)
+
     cd catkin_ws
 
     export ROS_MASTER_URI=http://${MASTER}:11311
@@ -201,12 +205,7 @@ function distributeTasks(){
 getServers
 printServers
 distributeTasks
-#### start master on localhost
-echo "start node on localhost : http://${MASTER}:11311"
-# set environment loader
-source devel/setup.bash
-roslaunch ${MASTERROSPACK} ${MASTERLAUNCH}
-
+startMaster ${MASTERROSPACK} ${MASTERLAUNCH}
 for sid in "${!server_nodes[@]}"
 do
     echo "start node on server : ${servers[$sid]}" 
