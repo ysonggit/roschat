@@ -92,7 +92,7 @@ function printServers() {
 # 4. call roslaunch 
 function connectServer(){
     echo " Connect to Server $2 ... "
-    screen -dmS sh -c "./startclient.sh $1 $2 $3 $4 $5"
+    sh -c "./startclient.sh $1 $2 $3 $4 $5"
 }
 
 declare -A used_servers
@@ -198,7 +198,7 @@ function distributeTasks(){
 getServers
 #printServers
 distributeTasks
-screen -dmS talker sh -c "./startmaster.sh $MASTERROSPACK $MASTERLAUNCH"
+sh -c "./startmaster.sh $MASTERROSPACK $MASTERLAUNCH"
 for sid in "${!server_nodes[@]}"
 do
     echo "start node on server : ${servers[$sid]}" 
