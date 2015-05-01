@@ -7,6 +7,6 @@ do
     then
         echo "process $p is not running"
     else
-        kill -9 $(pgrep "$p")
+        kill -9 $(pgrep $p)
     fi
 done
