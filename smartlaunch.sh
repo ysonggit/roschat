@@ -96,7 +96,6 @@ function connectServer(){
     nohup ./startclient.sh $1 $2 $3 $4 $5 &
 }
 
-
 declare -A used_servers
 declare -A nodes
 declare -A used_nodes
