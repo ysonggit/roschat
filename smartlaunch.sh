@@ -22,7 +22,6 @@ MASTER="eos"
 MASTERLAUNCH="chat.launch"
 MASTERROSPACK="rostalker"
 # template.launch contains only the XML format definition of a ros node
-TEMPLATE="template.launch"
 CLIENTLAUNCH="client.launch"
 CLIENTROSPACK="roslistener"
 

@@ -9,20 +9,19 @@
 
 #nodetemplate=$(<${TEMPLATE})
 template_array=()
-
+TEMPFILE="template.launch"
 function readTemplate() {
     i=0
     while read line # Read a line
     do
         template_array[i]=$line # Put it into the array
         i=$(($i + 1))
-    done < $1
+    done < $TEMPFILE
 }
 
-CLIENTLAUNCH="client.launch"
 # NOTE: must have server_nodes array built before call this function
 # Usage:
-# writeLaunch NODESIDS
+# writeLaunch NODESIDS 
 function writeLaunch(){
     # take array as argument
     declare -a argarray=("${!1}")
@@ -30,19 +29,20 @@ function writeLaunch(){
     # get array length
     arr_len=${#nums[@]}
     # read template xml file
-    readTemplate ${TEMPLATE}
+    readTemplate
     # write to launch file based on template
-    echo "<launch>" >> ${CLIENTLAUNCH}
+    LAUNCH="client.launch"
+    echo "<launch>" >> ${LAUNCH}
     for (( i=0; i<${arr_len}; i++ ));
     do
         for e in "${template_array[@]}"
         do
             elem=$e
             elem=${elem/"@"/${nums[$i]}}
-            echo $elem >> ${CLIENTLAUNCH}
+            echo $elem >> ${LAUNCH}
         done
     done
-    echo "</launch>" >> ${CLIENTLAUNCH};
+    echo "</launch>" >> ${LAUNCH};
 
     #echo $nodetemplate >> ${XMLFILE}
 }
