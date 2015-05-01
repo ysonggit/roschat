@@ -3,10 +3,10 @@
 procs=("roslaunch", "rosmaster", "rosout")
 for p in "${procs[@]}"
 do
-    if [ -z "$(pgrep ${p})"];
+    if [ -z "$(pgrep $p)" ];
     then
-        echo "process ${p} is not running"
+        echo "process $p is not running"
     else
-        kill -9 $(pgrep "${p}")
+        kill -9 $(pgrep "$p")
     fi
 done

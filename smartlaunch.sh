@@ -1,4 +1,6 @@
 #!/bin/bash
+source startmaster.sh
+source startclient.sh 
 # this file must be placed directly under the catkin workspace
 echo "|----------------------------|"
 echo "| ROS Nodes Launcher         |"
@@ -84,34 +86,15 @@ function printServers() {
 }
 
 # Useage:
-# connect_server CLIENTNAME NODESIDS
+# connect_server CLIENTNAME NODESIDS CLIENTROSPACK CLIENTLAUNCH
 # NOTE: make sure to compile the ros program before run it 
 # 1. connect to server using ssh
 # 2. write launch file to run on that server based on template file
 # 3. set ROS_MASTER to MASTER
 # 4. call roslaunch 
 function connectServer(){
-    host=$1
-    echo " Connect to Server ${host} ... "
-    ssh $host '
-    ./removezombies.sh
-
-    kill -9 $(pgrep $1)
-
-    cd catkin_ws
-
-    export ROS_MASTER_URI=http://${MASTER}:11311
-
-    source devel/setup.bash
-
-    source writelaunch.sh
-
-    writeLaunch $2
-
-    cp ${CLIENTLAUNCH} ./src/${CLIENTROSPACK}/${CLIENTLAUNCH}
-
-    roslaunch ${CLIENTROSPACK} ${CLIENTLAUNCH}
-    '
+    echo " Connect to Server $2 ... "
+    nohup ./startclient.sh $1 $2 $3 $4 $5 &
 }
 
 
@@ -203,11 +186,11 @@ function distributeTasks(){
 }
 
 getServers
-printServers
+#printServers
 distributeTasks
-startMaster ${MASTERROSPACK} ${MASTERLAUNCH}
+nohup ./startmaster.sh $MASTERROSPACK $MASTERLAUNCH &
 for sid in "${!server_nodes[@]}"
 do
     echo "start node on server : ${servers[$sid]}" 
-    connectServer  "${servers[$sid]}" "${server_nodes[$sid]}"
+    connectServer $MASTER "${servers[$sid]}" "${server_nodes[$sid]}" $CLIENTROSPACK $CLIENTLAUNCH
 done
