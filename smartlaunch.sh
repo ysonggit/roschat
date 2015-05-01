@@ -101,7 +101,6 @@ declare -A used_servers
 declare -A nodes
 declare -A used_nodes
 declare -A server_nodes
-
 function distributeTasks(){
     # number of servers
     n=${#servers[@]}
@@ -125,16 +124,18 @@ function distributeTasks(){
         done
     fi
     ####
-    echo "Enter maximum number of nodes you want to run on each server, followed by [ENTER]:"
-    read num
-
+    num=2
+    echo "Each host runs maximum $num nodes"
+    
     nodes_count=0
     servers_count=0
+    srvid=1
+    rest_nodes=$total
+    rest_servers=$n
     while [ $nodes_count -lt $total ]
     do
-        rest_nodes=$((${total}-${nodes_count}))
-        rest_servers=$((${n}-${servers_count}))
-        echo "There are $rest_nodes nodes to be assigned to $rest_servers servers"
+        
+        echo "Totally $rest_nodes nodes to be assigned to $rest_servers servers"
         if [ $verbose == true ];
         then
             echo "Available servers: "
@@ -146,29 +147,34 @@ function distributeTasks(){
                 fi
             done
         fi
-        srvid=$((${servers_count}+1))
+        
         server_nodes[$srvid]=""
-        tasks_num=$((${rest_nodes}>${num}?${num}:${rest_nodes}))
-        nodes_count=$((${nodes_count} + ${tasks_num}))
         count=0
         for k in "${nodes[@]}"
         do
+            echo "Assign task $k ... "
             if [ ${used_nodes[$k]} == "0" ];
             then
                 used_nodes[$k]=1
                 count=$(($count+1))
                 server_nodes[$srvid]="${server_nodes[$srvid]}  $k"
+                nodes_count=$((${nodes_count} + 1))
                 if [ $count == $num ];
                 then
+                    srvid=$((${srvid}+1))
+                    servers_count=$((${servers_count}+1))
                     break;
                 fi
                 if [  $nodes_count == $total  ];
                 then
+                    srvid=$((${srvid}+1))
                     break;
                 fi
             fi
         done
-
+        rest_nodes=$((${total}-${nodes_count}))
+        rest_servers=$((${n}-${servers_count}))
+        
         for snkey in "${!server_nodes[@]}"
         do
             printf "Server $snkey runs nodes : "
