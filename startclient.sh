@@ -20,7 +20,7 @@ source writelaunch.sh
 
 writeLaunch $3 $4
 
-cp $4 ./src/$4/$5
+cp $5 ./src/$4/$5
 
 roslaunch $4 $5
 "
