@@ -1,6 +1,5 @@
 #!/bin/bash
-source startmaster.sh
-source startclient.sh 
+
 # this file must be placed directly under the catkin workspace
 echo "|----------------------------|"
 echo "| ROS Nodes Launcher         |"
