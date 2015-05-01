@@ -12,6 +12,8 @@ cd catkin_ws
 
 export ROS_MASTER_URI=http://$1:11311
 
+pwd
+
 ./cleanclient.sh $4 $5
 
 source devel/setup.bash
