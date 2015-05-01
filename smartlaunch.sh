@@ -11,7 +11,7 @@ echo "|               (. .)        |"
 echo "|              (( v ))       |"
 echo "|----------------m-m---------|"
 
-
+export ROSLAUNCH_SSH_UNKNOWN=1
 # read ssh configure file to figure out available server names
 # The format of ssh config is
 # Host XXX
@@ -136,18 +136,21 @@ function distributeTasks(){
         rest_nodes=$((${total}-${nodes_count}))
         rest_servers=$((${n}-${servers_count}))
         echo "There are $rest_nodes nodes to be assigned to $rest_servers servers"
-        echo "Available servers: "
-        for((i=1; i<=n; i++));
-        do
-            if [ -z "${used_servers[$i]}" ]; # server not used yet -z : is zero 
-            then
-                echo "$i : ${servers[$i]}"
-            fi
-        done
+        if [ $verbose == true ];
+        then
+            echo "Available servers: "
+            for((i=1; i<=n; i++));
+            do
+                if [ -z "${used_servers[$i]}" ]; # server not used yet -z : is zero 
+                then
+                    echo "$i : ${servers[$i]}"
+                fi
+            done
+        fi
         srvid=$((${servers_count}+1))
         server_nodes[$srvid]=""
         tasks_num=$((${rest_nodes}>${num}?${num}:${rest_nodes}))
-        nodes_count=$((${nodes_count}+${task_num}))
+        nodes_count=$((${nodes_count} + ${task_num}))
         count=0
         for k in "${nodes[@]}"
         do
