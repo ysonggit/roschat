@@ -32,6 +32,10 @@ function writeLaunch(){
     readTemplate
     # write to launch file based on template
     LAUNCH="client.launch"
+    if [ -f $LAUNCH ];
+    then
+        rm $LAUNCH
+    fi
     echo "<launch>" >> ${LAUNCH}
     for (( i=0; i<${arr_len}; i++ ));
     do
