@@ -149,7 +149,7 @@ function distributeTasks(){
         srvid=$((${servers_count}+1))
         server_nodes[$srvid]=""
         tasks_num=$((${rest_nodes}>${num}?${num}:${rest_nodes}))
-        nodes_count=$((${nodes_count} + ${task_num}))
+        nodes_count=$((${nodes_count} + ${tasks_num}))
         count=0
         for k in "${nodes[@]}"
         do
@@ -158,7 +158,11 @@ function distributeTasks(){
                 used_nodes[$k]=1
                 count=$(($count+1))
                 server_nodes[$srvid]="${server_nodes[$srvid]}  $k"
-                if [ $count == $num || $nodes_count == $total ];
+                if [ $count == $num ];
+                then
+                    break;
+                fi
+                if [  $nodes_count == $total  ];
                 then
                     break;
                 fi

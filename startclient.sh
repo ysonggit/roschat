@@ -6,11 +6,11 @@
 # $4 : Client ros package name
 # $5 : Client ros launch file
 ssh $2 '
-sh -c cleanclient.sh $4 $5
-
 cd catkin_ws
 
 export ROS_MASTER_URI=http://$1:11311
+
+sh -c cleanclient.sh $4 $5
 
 source devel/setup.bash
 
