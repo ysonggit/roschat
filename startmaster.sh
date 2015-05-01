@@ -10,8 +10,7 @@ else
 fi
 ./removezombies.sh
 #### start master on localhost
-echo "start node on localhost : http://${MASTER}:11311"
 # set environment loader
 source devel/setup.bash
-roslaunch $1 $2
+roslaunch $1 $2 
 
