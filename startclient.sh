@@ -4,7 +4,7 @@
 # $2 : Client host name
 # $3 : Nodes ids
 # $4 : Client ros package name
-# $5 : Client ros launch file
+
 # use double quotes after ssh
 # otherwise, if single quotes, shell will interpolate $parameter before sending command to server
 ssh $2 "
@@ -14,15 +14,13 @@ export ROS_MASTER_URI=http://$1:11311
 
 pwd
 
-./cleanclient.sh $4 $5
-
 source devel/setup.bash
 
-source writelaunch.sh
+./writelaunch.sh $3
 
-writeLaunch $3 $4
+mv client.launch ./src/$4/
 
-cp $5 ./src/$4/$5
+./cleanclient.sh $4
 
-roslaunch $4 $5
+roslaunch $4 client.launch
 "

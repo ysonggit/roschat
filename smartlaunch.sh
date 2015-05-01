@@ -202,7 +202,7 @@ distributeTasks
 for sid in "${!server_nodes[@]}"
 do
     echo "start node on server : ${servers[$sid]}" 
-    connectServer $MASTER "${servers[$sid]}" "${server_nodes[$sid]}" $CLIENTROSPACK $CLIENTLAUNCH
+    connectServer $MASTER "${servers[$sid]}" "${server_nodes[$sid]}" $CLIENTROSPACK 
 done
 
 echo "start node on localhost : http://$MASTER:11311"

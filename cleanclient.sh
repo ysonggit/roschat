@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage : 
-# cleanClient CLIENTROSPACK CLIENTLAUNCH
+# cleanClient CLIENTROSPACK
 function cleanClient(){
     if [ -z "$(pgrep $1)" ]
     then
