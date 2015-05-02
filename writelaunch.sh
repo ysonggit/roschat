@@ -2,7 +2,7 @@
 # this file must be placed directly under the catkin workspace
 # Usage:
 # writeLaunch NODESIDS 
-
+echo "nodes ids for writelaunch : $2"
 clientname=$1
 # take array as argument
 declare -a argarray=("$2")

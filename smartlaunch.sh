@@ -144,7 +144,7 @@ function distributeTasks(){
             then
                 used_nodes[$k]=1
                 count=$(($count+1))
-                server_nodes[$srvid]="${server_nodes[$srvid]}  $k"
+                server_nodes[$srvid]="${server_nodes[$srvid]} $k"
                 nodes_count=$((${nodes_count} + 1))
                 if [ $count == $num ];
                 then
@@ -167,7 +167,7 @@ function distributeTasks(){
             printf "Server $snkey runs nodes : "
             for snval in "${server_nodes[$snkey]}"
             do
-                printf "$snval  "
+                printf "$snval "
             done
             printf "\n"
         done
@@ -200,7 +200,7 @@ do
 
     ./cleanclient.sh $CLIENTROSPACK
 
-    ./writelaunch.sh ${servers[$sid]} ${server_nodes[$sid]} $CLIENTROSPACK
+    ./writelaunch.sh ${servers[$sid]} ${server_nodes[$sid]}
     "
     #sh -c "./startclient.sh $MASTER ${servers[$sid]} ${server_nodes[$sid]} $CLIENTROSPACK"
 done
