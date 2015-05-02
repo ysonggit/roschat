@@ -164,25 +164,12 @@ function distributeTasks(){
         
         for snkey in "${!server_nodes[@]}"
         do
-            nodeslist=""
             printf "Server $snkey runs nodes : "
             for snval in "${server_nodes[$snkey]}"
             do
-                nodeslist="$nodeslist $snval"
                 printf "$snval "
             done
             printf "\n"
-            echo "start node $nodesids on server : ${servers[$snkey]}"
-            echo " Connect to Server ${servers[$snkey]} ... "
-            ssh ${servers[$snkey]} "cd catkin_ws
-
-            export ROS_MASTER_URI=http://$MASTER:11311
-
-            source devel/setup.bash
-
-            ./cleanclient.sh $CLIENTROSPACK
-
-            ./writelaunch.sh ${servers[$snkey]} ${nodeslist}"
         done
 
         #### debug info
@@ -201,13 +188,14 @@ getServers
 #printServers
 distributeTasks
 
-# for sid in "${!server_nodes[@]}"
-# do
-#     nodesids=""
-#     for nd in "${server_nodes[$sid]}"
-#     do
-#         nodesids="${nodesids} $nid"
-#     done
+for sid in "${!server_nodes[@]}"
+do
+    printf "HOST [$sid] :: \n" 
+    for nd in "${server_nodes[$sid]}"
+    do
+        printf "$nd "
+    done
+    printf "\n"
 #     echo "start node $nodesids on server : ${servers[$sid]}"
 #     echo " Connect to Server ${servers[$sid]} ... "
 #     ssh ${servers[$sid]} "cd catkin_ws
@@ -216,8 +204,7 @@ distributeTasks
 #     ./cleanclient.sh $CLIENTROSPACK
 #     ./writelaunch.sh ${servers[$sid]} $nodesids
 #     "
-#     #sh -c "./startclient.sh $MASTER ${servers[$sid]} ${server_nodes[$sid]} $CLIENTROSPACK"
-# done
+done
 
-echo "start node on localhost : http://$MASTER:11311"
-sh -c "./startmaster.sh $MASTERROSPACK $MASTERLAUNCH"
+# echo "start node on localhost : http://$MASTER:11311"
+# sh -c "./startmaster.sh $MASTERROSPACK $MASTERLAUNCH"
