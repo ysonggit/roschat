@@ -4,11 +4,16 @@
 # writeLaunch NODESIDS 
 
 # take array as argument
-declare -a argarray=("${!1}")
+declare -a argarray=("$1")
 nums=(`echo $argarray`)
 # get array length
 arr_len=${#nums[@]}
 
+nodesconcat=""
+for j in "${nums[@]}"
+do
+    nodesconcat="${nodesconcat}$j"
+done
 # read template xml fil
 template_array=()
 TEMPFILE="template.launch"
@@ -19,13 +24,8 @@ do
     i=$(($i + 1))
 done < $TEMPFILE
 
+LAUNCH="client${nodesconcat}.launch"
 # write to launch file based on template
-LAUNCH="client.launch"
-if [ -f $LAUNCH ];
-then
-    rm $LAUNCH
-fi
-
 echo "<launch>" >> ${LAUNCH}
 for (( i=0; i<${arr_len}; i++ ));
 do
@@ -38,7 +38,11 @@ do
 done
 echo "</launch>" >> ${LAUNCH};
 
-#echo $nodetemplate >> ${XMLFILE}
+source devel/setup.bash
+
+sh -c "mv ${LAUNCH} src/$2/"
+
+sh -c "roslaunch $2 ${LAUNCH}"
 
 
 

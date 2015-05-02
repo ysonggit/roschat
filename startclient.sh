@@ -16,11 +16,7 @@ pwd
 
 source devel/setup.bash
 
-./writelaunch.sh $3
-
-mv client.launch ./src/$4/
-
 ./cleanclient.sh $4
 
-roslaunch $4 client.launch
+./writelaunch.sh $3 $4
 "
