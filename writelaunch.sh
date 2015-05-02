@@ -36,9 +36,9 @@ echo "</launch>" >> ${LAUNCH};
 
 source devel/setup.bash
 
-sh -c "mv ${LAUNCH} src/$3/"
+sh -c "mv ${LAUNCH} src/roslistener/"
 
-sh -c "roslaunch $3 ${LAUNCH}"
+sh -c "roslaunch roslistener ${LAUNCH}"
 
 
 
