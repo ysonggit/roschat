@@ -190,12 +190,7 @@ distributeTasks
 
 for sid in "${!server_nodes[@]}"
 do
-    printf "HOST [$sid] :: \n" 
-    for nd in "${server_nodes[$sid]}"
-    do
-        printf "$nd "
-    done
-    printf "\n"
+    printf "HOST [$sid] :: ${server_nodes[$sid]}" 
 #     echo "start node $nodesids on server : ${servers[$sid]}"
 #     echo " Connect to Server ${servers[$sid]} ... "
 #     ssh ${servers[$sid]} "cd catkin_ws
