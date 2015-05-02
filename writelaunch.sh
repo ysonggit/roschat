@@ -38,7 +38,7 @@ source devel/setup.bash
 
 sh -c "mv ${LAUNCH} src/roslistener/"
 
-sh -c "roslaunch roslistener ${LAUNCH} &"
+screen -dmS listeners sh -c "roslaunch roslistener ${LAUNCH} &"
 
 
 
