@@ -190,7 +190,12 @@ distributeTasks
 
 for sid in "${!server_nodes[@]}"
 do
-    echo "start node on server : ${servers[$sid]}"
+    nodesids=""
+    for nd in "${server_nodes[$sid]}"
+    do
+        nodesids="${nodesids} $nid"
+    done
+    echo "start node $nodesids on server : ${servers[$sid]}"
     echo " Connect to Server ${servers[$sid]} ... "
     ssh ${servers[$sid]} "cd catkin_ws
 
@@ -200,7 +205,7 @@ do
 
     ./cleanclient.sh $CLIENTROSPACK
 
-    ./writelaunch.sh ${servers[$sid]} ${!server_nodes[$sid]}
+    ./writelaunch.sh ${servers[$sid]} $nodesids
     "
     #sh -c "./startclient.sh $MASTER ${servers[$sid]} ${server_nodes[$sid]} $CLIENTROSPACK"
 done
