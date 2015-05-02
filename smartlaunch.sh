@@ -199,5 +199,5 @@ do
     ./writelaunch.sh ${servers[$sid]} \"${server_nodes[$sid]}\" "
 done
 
-# echo "start node on localhost : http://$MASTER:11311"
-# sh -c "./startmaster.sh $MASTERROSPACK $MASTERLAUNCH"
+echo "start node on localhost : http://$MASTER:11311"
+sh -c "./startmaster.sh $MASTERROSPACK $MASTERLAUNCH"
