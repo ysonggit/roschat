@@ -192,7 +192,17 @@ for sid in "${!server_nodes[@]}"
 do
     echo "start node on server : ${servers[$sid]}"
     echo " Connect to Server ${servers[$sid]} ... "
-    sh -c "./startclient.sh $MASTER ${servers[$sid]} ${server_nodes[$sid]} $CLIENTROSPACK"
+    ssh ${servers[$sid]} "cd catkin_ws
+
+    export ROS_MASTER_URI=http://$MASTER:11311
+
+    source devel/setup.bash
+
+    ./cleanclient.sh $CLIENTROSPACK
+
+    ./writelaunch.sh ${servers[$sid]} ${server_nodes[$sid]} $CLIENTROSPACK
+    "
+    #sh -c "./startclient.sh $MASTER ${servers[$sid]} ${server_nodes[$sid]} $CLIENTROSPACK"
 done
 
 echo "start node on localhost : http://$MASTER:11311"
