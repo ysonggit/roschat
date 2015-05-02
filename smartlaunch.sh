@@ -190,15 +190,13 @@ distributeTasks
 
 for sid in "${!server_nodes[@]}"
 do
-    printf "HOST [$sid] :: ${server_nodes[$sid]}" 
-#     echo "start node $nodesids on server : ${servers[$sid]}"
-#     echo " Connect to Server ${servers[$sid]} ... "
-#     ssh ${servers[$sid]} "cd catkin_ws
-#     export ROS_MASTER_URI=http://$MASTER:11311
-#     source devel/setup.bash
-#     ./cleanclient.sh $CLIENTROSPACK
-#     ./writelaunch.sh ${servers[$sid]} $nodesids
-#     "
+    printf "HOST [$sid] :: ${server_nodes[$sid]}\n" 
+    echo " Connect to Server ${servers[$sid]} ... "
+    ssh ${servers[$sid]} "cd catkin_ws
+    export ROS_MASTER_URI=http://$MASTER:11311
+    source devel/setup.bash
+    ./cleanclient.sh $CLIENTROSPACK
+    ./writelaunch.sh ${servers[$sid]} \"${server_nodes[$sid]}\" "
 done
 
 # echo "start node on localhost : http://$MASTER:11311"
