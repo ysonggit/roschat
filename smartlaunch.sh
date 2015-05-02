@@ -83,17 +83,6 @@ function printServers() {
     done
 }
 
-# Useage:
-# connect_server CLIENTNAME NODESIDS CLIENTROSPACK CLIENTLAUNCH
-# NOTE: make sure to compile the ros program before run it 
-# 1. connect to server using ssh
-# 2. write launch file to run on that server based on template file
-# 3. set ROS_MASTER to MASTER
-# 4. call roslaunch 
-function connectServer(){
-    echo " Connect to Server $2 ... "
-    sh -c "./startclient.sh $1 $2 $3 $4 $5"
-}
 
 declare -A used_servers
 declare -A nodes
@@ -201,8 +190,9 @@ distributeTasks
 
 for sid in "${!server_nodes[@]}"
 do
-    echo "start node on server : ${servers[$sid]}" 
-    connectServer $MASTER "${servers[$sid]}" "${server_nodes[$sid]}" $CLIENTROSPACK 
+    echo "start node on server : ${servers[$sid]}"
+    echo " Connect to Server ${servers[$sid]} ... "
+    sh -c "./startclient.sh $MASTER ${servers[$sid]} ${server_nodes[$sid]} $CLIENTROSPACK"
 done
 
 echo "start node on localhost : http://$MASTER:11311"

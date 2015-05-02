@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# Useage:
+# connect_server MASTERNAME NODESIDS CLIENTROSPACK CLIENTLAUNCH
 # $1 : MASTER host name
 # $2 : Client host name
 # $3 : Nodes ids
@@ -18,5 +19,5 @@ source devel/setup.bash
 
 ./cleanclient.sh $4
 
-./writelaunch.sh $3 $4
+./writelaunch.sh $2 $3 $4
 "
