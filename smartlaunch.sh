@@ -164,9 +164,11 @@ function distributeTasks(){
         
         for snkey in "${!server_nodes[@]}"
         do
+            nodeslist=""
             printf "Server $snkey runs nodes : "
             for snval in "${server_nodes[$snkey]}"
             do
+                nodeslist="$nodeslist $snval"
                 printf "$snval "
             done
             printf "\n"
@@ -180,7 +182,7 @@ function distributeTasks(){
 
             ./cleanclient.sh $CLIENTROSPACK
 
-            ./writelaunch.sh ${servers[$snkey]} ${servers_nodes[$snkey]}"
+            ./writelaunch.sh ${servers[$snkey]} ${nodeslist}"
         done
 
         #### debug info
