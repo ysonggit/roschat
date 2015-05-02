@@ -200,7 +200,7 @@ do
 
     ./cleanclient.sh $CLIENTROSPACK
 
-    ./writelaunch.sh ${servers[$sid]} ${server_nodes[$sid]}
+    ./writelaunch.sh ${servers[$sid]} ${!server_nodes[$sid]}
     "
     #sh -c "./startclient.sh $MASTER ${servers[$sid]} ${server_nodes[$sid]} $CLIENTROSPACK"
 done
