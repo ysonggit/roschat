@@ -34,11 +34,11 @@ do
 done
 echo "</launch>" >> ${LAUNCH};
 
-source devel/setup.bash
+#source devel/setup.bash
 
 sh -c "mv ${LAUNCH} src/roslistener/"
 
-screen -dmS listeners sh -c "roslaunch roslistener ${LAUNCH} &"
+sh -c "roslaunch roslistener ${LAUNCH} &"
 
 
 

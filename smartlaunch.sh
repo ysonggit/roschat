@@ -18,7 +18,7 @@ export ROSLAUNCH_SSH_UNKNOWN=1
 #      Port YYY
 #      User ZZZ
 INFILE="/acct/s1/song24/.ssh/config"
-MASTER="eos"
+MASTER="broad"
 MASTERLAUNCH="chat.launch"
 MASTERROSPACK="rostalker"
 # template.launch contains only the XML format definition of a ros node
@@ -111,7 +111,7 @@ function distributeTasks(){
         done
     fi
     ####
-    num=2
+    num=1
     echo "Each host runs maximum $num nodes"
     
     nodes_count=0
@@ -189,19 +189,20 @@ getServers
 distributeTasks
 echo "start node on localhost: $MASTER.cse.sc.edu:11311"
 #sh -c "./startmaster.sh $MASTERROSPACK $MASTERLAUNCH"
-ssh $MASTER "
+gnome-terminal -x sh -c "
 cd catkin_ws
 source devel/setup.bash
-./startmaster.sh $MASTERROSPACK $MASTERLAUNCH"
+./cleanmaster.sh $MASTERROSPACK
+roslaunch $MASTERROSPACK chat.launch" 
 
 for sid in "${!server_nodes[@]}"
 do
     printf "HOST [$sid] :: ${server_nodes[$sid]}\n" 
     echo " Connect to Server ${servers[$sid]} ... "
-    ssh ${servers[$sid]} "cd catkin_ws
-    export ROS_MASTER_URI=http://$MASTER.cse.sc.edu:11311
+    gnome-terminal -x sh -c "ssh ${servers[$sid]} \"cd catkin_ws
     source devel/setup.bash
+    export ROS_MASTER_URI=http://$MASTER.cse.sc.edu:11311
     ./cleanclient.sh $CLIENTROSPACK
-    ./writelaunch.sh ${servers[$sid]} \"${server_nodes[$sid]}\" "
+    ./writelaunch.sh ${servers[$sid]} \"${server_nodes[$sid]}\" \"; bash"
 done
 

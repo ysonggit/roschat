@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <launch>
-<param type="int" name="listener_num" value="2"/>
+<param type="int" name="listener_num" value="4"/>
 <node type="rostalker" pkg="rostalker" name="presenter" output="screen">
 </node>
 <!-- <machine name="broad" address="broad.cse.sc.edu" env-loader="/acct/s1/song24/catkin_ws/devel/setup.bash" user="song24"/> -->
-<!-- <node machine="broad" type="roslistener" pkg="roslistener" name="listener1"> -->
-<!-- <param type="int" name="listenerid" value="1"/> -->
-<!-- </node> -->
+<!--node type="roslistener" pkg="roslistener" name="listener1"> 
+<param type="int" name="listenerid" value="1"/> 
+</node-->
 <!-- <machine name="saluda" address="saluda.cse.sc.edu" env-loader="/acct/s1/song24/catkin_ws/devel/setup.bash" user="song24"/> -->
 <!-- <node machine="saluda" type="roslistener" pkg="roslistener" name="listener2"> -->
 <!-- <param type="int" name="listenerid" value="2"/> -->

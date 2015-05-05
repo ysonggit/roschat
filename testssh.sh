@@ -1,4 +1,6 @@
-#!/bin/bash
+ #!/bin/bash
 
-gnome-terminal -x sh -c "ssh eos \" sh -c  hello.sh \"; bash"
+gnome-terminal -x sh -c "ssh eos \"ls 
+	./hello.sh
+\"; bash"
 echo "done ssh"

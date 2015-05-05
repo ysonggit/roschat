@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage :
-# startMaster MASTERROSPACK MASTERLAUNCH
+# startMaster MASTERROSPACK
 
 if [ -z "$(pgrep $1)" ]
 then
@@ -11,6 +11,6 @@ fi
 ./removezombies.sh
 #### start master on localhost
 # set environment loader
-source devel/setup.bash
-roslaunch $1 $2 
+#source devel/setup.bash
+
 
