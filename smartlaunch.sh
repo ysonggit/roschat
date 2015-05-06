@@ -83,7 +83,6 @@ function printServers() {
     done
 }
 
-
 declare -A used_servers
 declare -A nodes
 declare -A used_nodes
@@ -111,7 +110,7 @@ function distributeTasks(){
         done
     fi
     ####
-    num=1
+    num=2
     echo "Each host runs maximum $num nodes"
     
     nodes_count=0
@@ -144,7 +143,7 @@ function distributeTasks(){
             then
                 used_nodes[$k]=1
                 count=$(($count+1))
-                server_nodes[$srvid]="${server_nodes[$srvid]} $k"
+                server_nodes[$srvid]="${server_nodes[$srvid]};$k"
                 nodes_count=$((${nodes_count} + 1))
                 if [ $count == $num ];
                 then
@@ -197,12 +196,19 @@ roslaunch $MASTERROSPACK chat.launch"
 
 for sid in "${!server_nodes[@]}"
 do
-    printf "HOST [$sid] :: ${server_nodes[$sid]}\n" 
-    echo " Connect to Server ${servers[$sid]} ... "
+    servername=${servers[$sid]}
+    echo " Connect to Server $servername ... "
+    serverslist=${server_nodes[$sid]}
+    nums=$(echo $serverslist | tr ";" "\n")
+    for x in $nums
+    do
+        echo "$x" >> "serverslist.$servername"
+    done
+    printf "HOST [$sid] :: $serverslist\n" 
     gnome-terminal -x sh -c "ssh ${servers[$sid]} \"cd catkin_ws
     source devel/setup.bash
     export ROS_MASTER_URI=http://$MASTER.cse.sc.edu:11311
     ./cleanclient.sh $CLIENTROSPACK
-    ./writelaunch.sh ${servers[$sid]} \"${server_nodes[$sid]}\" \"; bash"
+    ./writelaunch.sh ${servers[$sid]} \"; bash"
 done
 
